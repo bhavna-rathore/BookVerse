@@ -1,0 +1,8 @@
+[
+  { "name": "Self Growth", "description": "Personal development, habits, productivity" },
+  { "name": "Productivity", "description": "Books about focus, deep work and systems" },
+  { "name": "Finance", "description": "Personal finance, investing, money mindset" },
+  { "name": "Motivation", "description": "Inspiration, resilience, mindset" },
+  { "name": "Technology", "description": "Tech, product design, startups" },
+  { "name": "Fiction", "description": "Novels and storytelling" }
+]

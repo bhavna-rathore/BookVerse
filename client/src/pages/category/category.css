@@ -1,0 +1,126 @@
+.category-page {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.category-container {
+  min-height: calc(100vh - 64px);
+  background: var(--bg-primary);
+  transition: background-color 0.3s ease;
+}
+
+.category-header {
+  background: var(--bg-secondary);
+  padding: 40px 0;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.category-title {
+  font-size: 32px;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.category-stats {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.category-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+}
+
+.posts-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.post-wrapper {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--border-color);
+}
+
+.post-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.loading-state {
+  text-align: center;
+  padding: 48px;
+  color: var(--text-secondary);
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--bg-secondary);
+  border-radius: 50%;
+  border-top-color: var(--accent-color);
+  margin: 0 auto 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 64px 24px;
+  color: var(--text-secondary);
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-state h2 {
+  font-size: 24px;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+}
+
+.empty-state p {
+  font-size: 16px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .category-header {
+    padding: 24px 0;
+  }
+
+  .category-title {
+    font-size: 24px;
+  }
+
+  .posts-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .category-content {
+    padding: 0 16px 24px;
+  }
+}

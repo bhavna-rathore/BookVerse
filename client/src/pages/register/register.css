@@ -1,0 +1,140 @@
+.register {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: var(--bg-secondary);
+  transition: background 0.3s ease;
+}
+
+.registerCard {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  width: 400px;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px var(--shadow-color);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.registerTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.registerSubtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.inputGroup label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.registerInput {
+  padding: 12px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s, background 0.3s;
+}
+
+.registerInput:focus {
+  border-color: var(--accent-color);
+  background: var(--bg-primary);
+}
+
+.registerButton {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+  margin-top: 10px;
+}
+
+.registerButton:hover {
+  background: color-mix(in srgb, var(--accent-color) 80%, black);
+  transform: translateY(-1px);
+}
+
+.registerButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.registerError {
+  color: #e63946;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.registerSuccess {
+  color: #2ecc71;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.registerFooter {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.registerLoginLink {
+  margin-left: 5px;
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.registerLoginLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+  .registerCard {
+    background: var(--bg-primary);
+  }
+
+  .registerInput {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+  }
+
+  .registerInput:focus {
+    border-color: var(--accent-color);
+  }
+}
+
+@media (max-width: 480px) {
+  .registerCard {
+    width: 90%;
+    padding: 1.8rem;
+  }
+}

@@ -1,0 +1,144 @@
+.post {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 12px 8px;
+  width: 700px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background .2s ease, color .2s ease;
+}
+
+.category-list .post {
+  width: 100%;
+}
+
+.book-card .post {
+  width: 100%;
+  border: none;
+}
+
+.post--dark .post--light {}
+
+[data-reader="true"] .post,
+.post.post--reader {
+  font-family: var(--content-font-family, Georgia, serif);
+  font-size: var(--font-size-base, 18px);
+  line-height: var(--line-height-base, 1.8);
+  max-width: var(--max-width-content, none);
+}
+
+.postCover {
+  width: 140px;
+  height: 210px;
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.postImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.postBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.postInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.postCats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.postCat {
+  background: rgba(26, 115, 232, 0.08);
+  color: var(--accent-color);
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.postTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.postDate {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.postMeta {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.postAuthor,
+.postRating,
+.postSummary,
+.postKeyLearnings,
+.postAudience {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.star {
+  color: var(--accent-color);
+  margin-right: 2px;
+}
+
+.ratingValue {
+  margin-left: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.postSummary p {
+  margin: 6px 0 0 0;
+  color: var(--text-primary);
+}
+
+.postKeyLearnings ul {
+  margin: 6px 0 0 18px;
+  padding-left: 18px;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link .postTitle:hover {
+  text-decoration: underline;
+}
+
+
+@media (max-width: 720px) {
+  .post {
+    flex-direction: column;
+  }
+
+  .postCover {
+    width: 100%;
+    height: 260px;
+  }
+}
