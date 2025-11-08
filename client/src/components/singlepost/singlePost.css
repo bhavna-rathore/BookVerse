@@ -1,0 +1,266 @@
+.singlePostContainer {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
+  width: 100%;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.singlePostCard {
+  max-width: var(--max-width-content, 1300px);
+  width: 100%;
+  background: var(--bg-primary);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px var(--shadow-color);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  color: var(--text-primary);
+}
+
+.singlePostImageWrapper {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.singlePostCover {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.singlePostContent {
+  padding: 24px 28px;
+  font-size: var(--font-size-base, 16px);
+  line-height: var(--line-height, 1.6);
+}
+
+.singlePostTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  position: relative;
+  color: var(--text-primary);
+}
+
+.singlePostTitleInput {
+  width: 100%;
+  font-size: 1.8rem;
+  font-weight: 600;
+  padding: 8px 10px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  outline: none;
+  margin-bottom: 12px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, background-color 0.3s ease;
+}
+
+.singlePostTitleInput:focus {
+  border-color: var(--accent-color);
+}
+
+.singlePostEdit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  gap: 12px;
+}
+
+.singlePostIcon {
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.singlePostIcon:hover {
+  color: var(--accent-color);
+}
+
+.singlePostMeta {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.singlePostMeta strong {
+  color: var(--text-primary);
+}
+
+.link {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.star {
+  color: #ffb400;
+  font-size: 1.1rem;
+}
+
+.ratingNum {
+  color: var(--text-secondary);
+  margin-left: 6px;
+}
+
+.ratingInput {
+  width: 60px;
+  padding: 4px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.95rem;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.singlePostDesc,
+.singlePostTextInput {
+  font-size: 1.05rem;
+  line-height: var(--line-height, 1.6);
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.singlePostTextInput {
+  width: 100%;
+  min-height: 100px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px;
+  outline: none;
+  resize: vertical;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, background-color 0.3s ease;
+}
+
+.singlePostTextInput:focus {
+  border-color: var(--accent-color);
+}
+
+.keyTakeawaysSection,
+.keyTakeawaysEdit {
+  margin-bottom: 24px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease;
+}
+
+.keyTakeawaysSection h3,
+.keyTakeawaysEdit h3 {
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+}
+
+.keyTakeawaysSection ul {
+  list-style: disc inside;
+  color: var(--text-primary);
+}
+
+.keyTakeawaysEdit input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  outline: none;
+  font-size: 0.95rem;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.keyTakeawaysEdit input:focus {
+  border-color: var(--accent-color);
+}
+
+.keyTakeawaysEdit button {
+  background-color: var(--accent-color);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+.keyTakeawaysEdit button:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 80%, black);
+}
+
+.whoShouldRead,
+.myTakeaway {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.whoShouldRead h3,
+.myTakeaway h3 {
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.singlePostButton {
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.singlePostButton:hover {
+  background-color: color-mix(in srgb, var(--accent-color) 80%, black);
+  transform: translateY(-1px);
+}
+
+.singlePostButton.cancel {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+  margin-left: 12px;
+}
+
+.singlePostButton.cancel:hover {
+  background-color: var(--text-secondary);
+  color: #fff;
+}
+
+.editActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+[data-reader="true"] .singlePostContent {
+  font-family: Georgia, serif;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+}

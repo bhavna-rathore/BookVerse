@@ -1,0 +1,319 @@
+[
+  {
+    "bookTitle": "Atomic Habits",
+    "username": "booklover123",
+    "author": "James Clear",
+    "category": "Self Growth",
+    "rating": 5,
+    "summary": "A practical guide to building better habits and breaking bad ones using small, consistent improvements.",
+    "keyTakeaways": [
+      "Tiny changes compound into remarkable results.",
+      "Focus on systems, not goals.",
+      "Identity-based habits are the most powerful."
+    ],
+    "whoShouldRead": "Anyone looking to improve daily productivity, consistency, or mindset.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/91bYsX41DVL.jpg",
+    "myTakeaway": "This book taught me that consistency matters more than intensity — it changed how I approach learning.",
+    "tags": ["habits", "self-improvement", "mindset", "productivity"],
+    "likes": 25,
+    "views": 180,
+    "isFeatured": true,
+    "createdAt": "2025-10-28T09:15:00Z"
+  },
+  {
+    "bookTitle": "Deep Work",
+    "username": "booklover123",
+    "author": "Cal Newport",
+    "category": "Productivity",
+    "rating": 4.5,
+    "summary": "Explores the value of deep, focused work in a distracted digital age.",
+    "keyTakeaways": [
+      "Deep work is like a superpower in the modern world.",
+      "Distraction destroys both focus and fulfillment.",
+      "Routines and rituals enable concentration."
+    ],
+    "whoShouldRead": "Knowledge workers, students, and creators seeking to boost focus.",
+    "bookCover": "http://images-na.ssl-images-amazon.com/images/I/71g2ednj0JL.jpg",
+    "myTakeaway": "Helped me design distraction-free work blocks — now my output is 3x higher.",
+    "tags": ["focus", "career", "mindfulness"],
+    "likes": 19,
+    "views": 140,
+    "isFeatured": false,
+    "createdAt": "2025-10-29T10:40:00Z"
+  },
+  {
+    "bookTitle": "The Psychology of Money",
+    "author": "Morgan Housel",
+    "username": "Nekkium",
+    "category": "Finance",
+    "rating": 4.8,
+    "summary": "A book that explains how personal behavior and mindset shape our financial success more than knowledge.",
+    "keyTakeaways": [
+      "Wealth is what you don’t see — savings, not spending.",
+      "Luck and risk play invisible roles in success.",
+      "Managing money is more about emotions than equations."
+    ],
+    "whoShouldRead": "Anyone interested in financial literacy, mindset, or investing.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/81FTjR8iDLL.jpg",
+    "myTakeaway": "Shifted my focus from income to freedom — financial peace matters more than status.",
+    "tags": ["money", "behavior", "mindset", "finance"],
+    "likes": 33,
+    "views": 220,
+    "isFeatured": true,
+    "createdAt": "2025-10-30T14:20:00Z"
+  },
+  {
+    "bookTitle": "Can’t Hurt Me",
+    "author": "David Goggins",
+     "username": "Nekkium",
+    "category": "Motivation",
+    "rating": 4.9,
+    "summary": "A raw story of resilience, pain, and mental toughness from a Navy SEAL who redefined his limits.",
+    "keyTakeaways": [
+      "You are capable of 40% more than you think.",
+      "Embrace suffering to build strength.",
+      "Discipline is stronger than motivation."
+    ],
+    "whoShouldRead": "Anyone struggling with self-discipline, fitness, or mental strength.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/81a4kCNuH+L.jpg",
+    "myTakeaway": "Every time I face self-doubt, I remember Goggins’ 'Callous the mind' mantra.",
+    "tags": ["mindset", "discipline", "motivation"],
+    "likes": 42,
+    "views": 300,
+    "isFeatured": true,
+    "createdAt": "2025-10-31T08:00:00Z"
+  },
+  {
+    "bookTitle": "Hooked: How to Build Habit-Forming Products",
+    "author": "Nir Eyal",
+     "username": "Nekkium",
+    "category": "Tech & Psychology",
+    "rating": 4.3,
+    "summary": "A breakdown of how successful apps and products keep users coming back through behavioral design.",
+    "keyTakeaways": [
+      "The Hook Model: Trigger → Action → Reward → Investment.",
+      "Products that help users achieve goals become habits.",
+      "Design ethically — avoid manipulation."
+    ],
+    "whoShouldRead": "Product managers, UX designers, developers, or entrepreneurs.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/81QpkIctqPL.jpg",
+    "myTakeaway": "Changed how I view app design — user habits are built, not bought.",
+    "tags": ["technology", "psychology", "design"],
+    "likes": 17,
+    "views": 110,
+    "isFeatured": false,
+    "createdAt": "2025-11-01T12:30:00Z"
+  }
+  ,
+  {
+    "bookTitle": "Sapiens: A Brief History of Humankind",
+    "username": "histbuff",
+    "author": "Yuval Noah Harari",
+    "category": "History",
+    "rating": 4.7,
+    "summary": "A sweeping history of humanity that connects biology, anthropology and culture to explain how Homo sapiens came to dominate the planet.",
+    "keyTakeaways": [
+      "Large-scale human cooperation is built on shared myths.",
+      "Agricultural revolution changed social structures more than diets.",
+      "Science and capitalism propelled rapid modern change."
+    ],
+    "whoShouldRead": "Readers interested in history, culture, and big-picture thinking.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg",
+    "myTakeaway": "Gave me a new lens to view societal change and modern institutions.",
+    "tags": ["history", "anthropology", "big-ideas"],
+    "likes": 58,
+    "views": 420,
+    "isFeatured": false,
+    "createdAt": "2025-11-02T09:00:00Z"
+  },
+  {
+    "bookTitle": "The Lean Startup",
+    "username": "startup_sam",
+    "author": "Eric Ries",
+    "category": "Business",
+    "rating": 4.2,
+    "summary": "A methodology for building startups and new products with fast experimentation, validated learning and iterative design.",
+    "keyTakeaways": [
+      "Build–Measure–Learn loop shortens product-market fit discovery.",
+      "Minimum Viable Product reduces wasteful development.",
+      "Pivot when data shows current strategy is not working."
+    ],
+    "whoShouldRead": "Entrepreneurs, product managers, founders.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/81-QB7nDh4L.jpg",
+    "myTakeaway": "Started testing assumptions earlier in my projects and saved months of work.",
+    "tags": ["startup", "product", "business"],
+    "likes": 31,
+    "views": 210,
+    "isFeatured": false,
+    "createdAt": "2025-10-25T11:20:00Z"
+  },
+  {
+    "bookTitle": "Thinking, Fast and Slow",
+    "username": "cog_psych",
+    "author": "Daniel Kahneman",
+    "category": "Psychology",
+    "rating": 4.6,
+    "summary": "Explains two modes of thought — fast, intuitive thinking and slow, deliberative thinking — and how they shape judgment and decision-making.",
+    "keyTakeaways": [
+      "System 1 (fast) and System 2 (slow) govern our thinking.",
+      "Cognitive biases systematically affect decisions.",
+      "Awareness of biases can improve choices but doesn’t remove them."
+    ],
+    "whoShouldRead": "Anyone who wants to make better decisions or understand human bias.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/41X7V5Q8G1L._SX324_BO1,204,203,200_.jpg",
+    "myTakeaway": "Now I pause before big decisions and check for bias.",
+    "tags": ["psychology", "decision-making", "cognitive-bias"],
+    "likes": 44,
+    "views": 360,
+    "isFeatured": true,
+    "createdAt": "2025-10-20T08:45:00Z"
+  },
+  {
+    "bookTitle": "The Alchemist",
+    "username": "storyseeker",
+    "author": "Paulo Coelho",
+    "category": "Fiction",
+    "rating": 4.0,
+    "summary": "A fable about following your personal legend, filled with simple but powerful life lessons.",
+    "keyTakeaways": [
+      "Pursue your personal legend and learn from the journey.",
+      "The universe conspires to help you when you commit.",
+      "Meaning is found in listening to your heart and acting."
+    ],
+    "whoShouldRead": "Readers who enjoy spiritual, philosophical fiction.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/51Z0nLAfLmL._SX331_BO1,204,203,200_.jpg",
+    "myTakeaway": "Reminded me that small signs and persistence matter.",
+    "tags": ["fiction", "inspiration", "philosophy"],
+    "likes": 29,
+    "views": 195,
+    "isFeatured": false,
+    "createdAt": "2025-09-12T14:00:00Z"
+  },
+  {
+    "bookTitle": "Educated",
+    "username": "learner_liz",
+    "author": "Tara Westover",
+    "category": "Memoir",
+    "rating": 4.5,
+    "summary": "A memoir about a woman who grows up isolated and self-educated, ultimately escaping to gain a formal education.",
+    "keyTakeaways": [
+      "Education expands the way you see the world.",
+      "Family ties can be both supporting and limiting.",
+      "Personal transformation is often a painful process."
+    ],
+    "whoShouldRead": "Readers interested in resilience, family dynamics, and education.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/81WojUxbbFL.jpg",
+    "myTakeaway": "Powerful story about the cost and value of education.",
+    "tags": ["memoir", "education", "resilience"],
+    "likes": 36,
+    "views": 240,
+    "isFeatured": false,
+    "createdAt": "2025-08-05T16:10:00Z"
+  },
+  {
+    "bookTitle": "The Four Agreements",
+    "username": "mindful_mark",
+    "author": "Don Miguel Ruiz",
+    "category": "Self Help",
+    "rating": 4.1,
+    "summary": "Four simple agreements to adopt for personal freedom and reduced suffering.",
+    "keyTakeaways": [
+      "Be impeccable with your word.",
+      "Don't take things personally.",
+      "Don't make assumptions and always do your best."
+    ],
+    "whoShouldRead": "Anyone seeking practical spiritual guidance.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/71bR3v7qBWL.jpg",
+    "myTakeaway": "Simple rules that improved my daily interactions.",
+    "tags": ["spiritual", "self-help", "habits"],
+    "likes": 22,
+    "views": 130,
+    "isFeatured": false,
+    "createdAt": "2025-07-18T09:30:00Z"
+  },
+  {
+    "bookTitle": "Grit: The Power of Passion and Perseverance",
+    "username": "grit_guru",
+    "author": "Angela Duckworth",
+    "category": "Psychology",
+    "rating": 4.3,
+    "summary": "Examines how sustained passion and perseverance (grit) predict long-term success more than talent alone.",
+    "keyTakeaways": [
+      "Effort counts twice toward achievement.",
+      "Grit combines passion and sustained practice.",
+      "Growth mindset complements grit-building."
+    ],
+    "whoShouldRead": "Students, educators, and anyone building long-term skills.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/71rW0Ww7y6L.jpg",
+    "myTakeaway": "Shifted focus from talent to consistent effort.",
+    "tags": ["motivation", "psychology", "success"],
+    "likes": 27,
+    "views": 160,
+    "isFeatured": false,
+    "createdAt": "2025-06-22T13:05:00Z"
+  },
+  {
+    "bookTitle": "Zero to One",
+    "username": "founder_felix",
+    "author": "Peter Thiel",
+    "category": "Business",
+    "rating": 4.0,
+    "summary": "Insights on building companies that create new things rather than copying existing models.",
+    "keyTakeaways": [
+      "Aim for monopoly by solving unique problems.",
+      "Progress comes from secrets and technology.",
+      "Think long-term and plan defensively."
+    ],
+    "whoShouldRead": "Founders, investors, and strategic thinkers.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/71HMyqG6MRL.jpg",
+    "myTakeaway": "Encouraged more ambitious, original product thinking.",
+    "tags": ["startups", "strategy", "business"],
+    "likes": 18,
+    "views": 125,
+    "isFeatured": false,
+    "createdAt": "2025-05-10T10:00:00Z"
+  },
+  {
+    "bookTitle": "Made to Stick",
+    "username": "comms_claire",
+    "author": "Chip Heath & Dan Heath",
+    "category": "Communication",
+    "rating": 4.4,
+    "summary": "Explains why some ideas survive and spread while others die, with practical techniques to make messages stick.",
+    "keyTakeaways": [
+      "Use simplicity, unexpectedness and concreteness.",
+      "Emotion and stories help ideas spread.",
+      "Analogies and examples make concepts memorable."
+    ],
+    "whoShouldRead": "Marketers, teachers, leaders, and communicators.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/71z9vWwTeIL.jpg",
+    "myTakeaway": "Applied techniques improved presentation clarity.",
+    "tags": ["communication", "marketing", "storytelling"],
+    "likes": 24,
+    "views": 150,
+    "isFeatured": false,
+    "createdAt": "2025-04-02T12:25:00Z"
+  },
+  {
+    "bookTitle": "Essentialism: The Disciplined Pursuit of Less",
+    "username": "focus_faith",
+    "author": "Greg McKeown",
+    "category": "Productivity",
+    "rating": 4.2,
+    "summary": "A guide to focusing on the few vital things and eliminating the trivial many.",
+    "keyTakeaways": [
+      "Clarity comes from subtraction, not addition.",
+      "Say no to protect time for what matters most.",
+      "Small trade-offs lead to better priorities."
+    ],
+    "whoShouldRead": "Busy professionals and people wanting focus.",
+    "bookCover": "https://images-na.ssl-images-amazon.com/images/I/71X9u6N1l1L.jpg",
+    "myTakeaway": "Helped me create a clearer weekly priority list.",
+    "tags": ["productivity", "focus", "habits"],
+    "likes": 21,
+    "views": 142,
+    "isFeatured": false,
+    "createdAt": "2025-03-15T07:50:00Z"
+  }
+
+]

@@ -1,0 +1,146 @@
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: var(--bg-secondary);
+  transition: background 0.3s ease;
+}
+
+.loginCard {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  width: 380px;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px var(--shadow-color);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.loginTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.loginSubtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.inputGroup label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.loginInput {
+  padding: 12px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s, background 0.3s;
+}
+
+.loginInput:focus {
+  border-color: var(--accent-color);
+  background: var(--bg-primary);
+}
+
+.loginButton,
+.loginGuestButton {
+  padding: 12px 0;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.1s;
+}
+
+.loginButton {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+.loginButton:hover {
+  background: color-mix(in srgb, var(--accent-color) 80%, black);
+  transform: translateY(-1px);
+}
+
+.loginGuestButton {
+  background: transparent;
+  border: 1.5px solid var(--accent-color);
+  color: var(--accent-color);
+}
+
+.loginGuestButton:hover {
+  background: var(--accent-color);
+  color: #fff;
+}
+
+.loginError {
+  color: #e63946;
+  font-size: 0.9rem;
+  margin-top: -8px;
+  text-align: left;
+}
+
+.loginFooter {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.loginRegisterLink {
+  margin-left: 5px;
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.loginRegisterLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+  .loginCard {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+  }
+
+  .loginInput {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+  }
+
+  .loginInput:focus {
+    border-color: var(--accent-color);
+  }
+}
+
+@media (max-width: 480px) {
+  .loginCard {
+    width: 90%;
+    padding: 1.5rem;
+  }
+}

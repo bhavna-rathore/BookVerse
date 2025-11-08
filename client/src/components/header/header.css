@@ -1,0 +1,66 @@
+.header {
+  position: relative;
+}
+
+.headerTitles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+}
+
+.headerTitlelg {
+  font-size: 100px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.headerTitlesm {
+  font-size: 24px;
+  color: #fff;
+  margin-top: 20px;
+  display: block;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.headerImgWrapper {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+}
+
+.headerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8);
+}
+
+.headerOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
+  z-index: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .headerTitlelg {
+    font-size: 60px;
+  }
+
+  .headerTitlesm {
+    font-size: 20px;
+  }
+
+  .headerImgWrapper {
+    height: 350px;
+  }
+}

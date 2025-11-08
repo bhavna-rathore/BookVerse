@@ -1,0 +1,132 @@
+.settings {
+  display: flex;
+  background: var(--bg-secondary);
+  min-height: 100vh;
+  transition: background 0.3s ease;
+}
+
+.settingsWrapper {
+  flex: 9;
+  padding: 50px;
+  background: var(--bg-primary);
+  border-radius: 16px;
+  margin: 40px;
+  box-shadow: 0 5px 20px var(--shadow-color);
+  transition: all 0.3s ease;
+}
+
+.settingsTitle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.settingsUpdateTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.settingsForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.settingsForm label {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.settingsForm input {
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.settingsForm input:focus {
+  border-color: var(--accent-color);
+  background: var(--bg-primary);
+}
+
+.settingsPP {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.settingsPPImg {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+  box-shadow: 0 3px 10px var(--shadow-color);
+}
+
+.settingsPPLabel {
+  cursor: pointer;
+  background: var(--accent-color);
+  color: var(--bg-primary);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.settingsPPLabel:hover {
+  background: color-mix(in srgb, var(--accent-color) 80%, black);
+}
+
+.settingsSubmit {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.1s;
+}
+
+.settingsSubmit:hover {
+  background: color-mix(in srgb, var(--accent-color) 80%, black);
+  transform: translateY(-1px);
+}
+
+.settingsSubmit:disabled {
+  background: var(--border-color);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.settingsSuccess {
+  text-align: center;
+  margin-top: 20px;
+  color: #2ecc71;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .settingsWrapper {
+    margin: 20px;
+    padding: 25px;
+  }
+
+  .settingsPP {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .settingsPPImg {
+    width: 100px;
+    height: 100px;
+  }
+}
