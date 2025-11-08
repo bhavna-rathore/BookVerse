@@ -90,6 +90,9 @@ app.post("/api/seed", async (req, res) => {
     return res.status(500).json("Seeding failed");
   }
 });
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to BookVerse API 👋" });
+});
 
 const verifyToken = require("./middleware/verifyToken");
 app.use("/api/auth", authRoute);
