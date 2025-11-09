@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import "./write.css";
 import { Context } from "../../context/Context";
+import API from "../../api";
 
 export default function WriteBookPost() {
   const [bookTitle, setBookTitle] = useState("");
@@ -15,7 +16,6 @@ export default function WriteBookPost() {
   const [file, setFile] = useState(null);
   const { user } = useContext(Context);
 
-  const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   const handleAddLearning = () => setKeyLearnings([...keyLearnings, ""]);
 
@@ -48,14 +48,14 @@ export default function WriteBookPost() {
       data.append("file", file);
       newPost.bookCover = filename;
       try {
-        await axios.post(`/upload`, data);
+         await API.post(`/upload`, data);
       } catch (err) {
         console.error("Image upload failed:", err);
       }
     }
 
     try {
-      const res = await axios.post(`/posts`, newPost);
+      const res =await API.post(`/posts`, newPost);
       window.location.replace(`/post/${res.data._id}`);
     } catch (err) {
       console.error("Post creation failed", err);

@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Post from '../../components/post/Post';
 import './books.css';
+import API from '../../api';
 
 export default function BooksPage() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [sort, setSort] = useState('newest');
-  const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`/posts`);
+        const res = await API.get(`/posts`);
         const data = Array.isArray(res.data) ? res.data : [];
 
         // Sort books based on selection

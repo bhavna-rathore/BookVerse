@@ -4,6 +4,7 @@ import { Context } from "../../context/Context";
 import "./topbar.css";
 import axios from "axios";
 import { useLocation } from "react-router";
+import API from "../../api";
 
 export default function TopBar() {
   const { user, dispatch, theme, readerMode } = useContext(Context);
@@ -30,8 +31,8 @@ export default function TopBar() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
-        const res = await axios.get("/categories/");
+        
+        const res = await API.get("/categories/");
         const data = Array.isArray(res.data) ? res.data : [];
 
         const normalized = data.map((c) => ({

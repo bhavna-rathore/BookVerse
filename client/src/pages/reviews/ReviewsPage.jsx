@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Context } from '../../context/Context';
 import Post from '../../components/post/Post';
 import './reviews.css';
+import API from '../../api';
 
 export default function ReviewsPage() {
   const { user } = useContext(Context);
@@ -11,13 +12,12 @@ export default function ReviewsPage() {
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState('newest');
   const [filter, setFilter] = useState('all');
-  const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`/posts`);
+        const res = await API.get(`/posts`);
         let data = Array.isArray(res.data) ? res.data : [];
 
         // Apply filters
