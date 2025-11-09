@@ -4,20 +4,20 @@ import Post from "../../components/post/Post";
 import axios from "axios";
 import "./category.css";
 import { useLocation } from "react-router";
+import API from "../../api";
 
 export default function CategoryPage() {
   const { name } = useParams(); 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { search } = useLocation();
-  const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     async function load() {
       try {
         setLoading(true);
         const cat = decodeURIComponent(name);
-        const res = await axios.get(`/posts?category=${encodeURIComponent(cat)}` + search);
+        const res = await API.get(`/posts?category=${encodeURIComponent(cat)}` + search);
         setPosts(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error("Failed to load category posts", err);

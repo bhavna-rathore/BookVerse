@@ -5,6 +5,7 @@ import Posts from "../../components/posts/Posts";
 import "./home.css";
 import axios from "axios";
 import { useLocation } from "react-router";
+import API from '../../api';
 
 export default function Home() {
   const[posts, setPosts] = useState([]);
@@ -12,7 +13,7 @@ export default function Home() {
   
  useEffect(() => {
     const fetchPosts = async () => {
-      const res = await axios.get("/posts" + search);
+      const res = await API.get("/posts" + search);
      setPosts(res.data);
     };
     fetchPosts();

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useContext, useRef, useState } from "react";
 import { Link } from "react-router-dom"
 import "./login.css"
+import API from "../../api";
 
 export default function Login() {
 
@@ -16,7 +17,7 @@ export default function Login() {
     setError(null);
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post("/auth/login", {
+      const res = await API.post("/auth/login", {
         username: userRef.current.value,
         password: passwordRef.current.value,
       });
@@ -41,7 +42,7 @@ export default function Login() {
 
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await axios.post("/auth/login", {
+      const res =await API.post("/auth/login", {
         username: "Bhavna",
         password: "Bhavna",
       });

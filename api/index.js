@@ -11,7 +11,9 @@ const path = require("path");
 const fs = require("fs");
 const Post = require("./models/Post"); 
 const Category = require("./models/Category");
+const cors = require("cors");
 
+app.use(cors());
 dotenv.config();
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "/images")));
@@ -100,6 +102,5 @@ app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 
-app.listen("5000", () => {
-  console.log("backend is running");
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Backend running on port ${PORT}`));

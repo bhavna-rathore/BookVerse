@@ -4,6 +4,7 @@ import { Context } from "../../context/Context";
 import "./singlePost.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import API from "../../App";
 
 export default function SinglePost() {
   const location = useLocation();
@@ -20,13 +21,12 @@ export default function SinglePost() {
 
   const { user } = useContext(Context);
   const PF = "http://localhost:5000/images/";
-  const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   // Fetch single post
   useEffect(() => {
     const getPost = async () => {
       try {
-        const res = await axios.get("/posts/" + path);
+        const res = await API.get("/posts/" + path);
         const data = res.data;
         setPost(data);
         setBookTitle(data.bookTitle || data.title || "");
@@ -46,7 +46,7 @@ export default function SinglePost() {
   const handleDelete = async () => {
     try {
 
-      await axios.delete(`/posts/${post._id}?username=${user.username}`);
+      await API.delete(`/posts/${post._id}?username=${user.username}`);
 
       window.location.replace("/");
     } catch (err) {
@@ -57,7 +57,7 @@ export default function SinglePost() {
   // Update post
   const handleUpdate = async () => {
     try {
-      await axios.put(
+    await API.put(
         `/posts/${post._id}`,
         {
           username: user.username,

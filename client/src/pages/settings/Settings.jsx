@@ -3,6 +3,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import { useContext, useState, useEffect } from "react";
 import { Context } from "../../context/Context";
 import axios from "axios";
+import API from "../../api";
 
 export default function Settings() {
   const { user, dispatch } = useContext(Context);
@@ -14,7 +15,6 @@ export default function Settings() {
   const [loading, setLoading] = useState(false);
 
   const PF = "http://localhost:5000/images/";
-  const API = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     if (user) {
@@ -48,10 +48,10 @@ export default function Settings() {
         data.append("file", file);
         updatedUser.profilePic = filename;
 
-        await axios.post(`/upload`, data);
+         await API.post(`/upload`, data);
       }
 
-      const res = await axios.put("/users/" + user._id, updatedUser);
+      const res = await API.put("/users/" + user._id, updatedUser);
       setSuccess(true);
       dispatch({ type: "UPDATE_SUCCESS", payload: res.data });
     } catch (err) {
