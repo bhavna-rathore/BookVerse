@@ -15,6 +15,8 @@ import ReviewsPage from "./pages/reviews/ReviewsPage";
 
 function App() {
   const { user, theme, readerMode } = useContext(Context);
+  // Router enables client-side routing - so navigation doesn’t refresh the page.
+  // Routes + Route define which component should render for each URL.
   return (
     <Router>
       <TopBar />
