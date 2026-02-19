@@ -6,7 +6,7 @@ const verifyToken = require("../middleware/verifyToken");
 router.get("/", async (req, res) => {
   try {
     const cats = await Category.find({}).sort({ name: 1 });
-    console.log(cats, "hello categoryies'")
+
     res.status(200).json(cats);
   } catch (err) {
     console.error("Get categories error:", err);

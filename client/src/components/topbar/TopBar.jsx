@@ -15,9 +15,11 @@ export default function TopBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
 
+  // Theme change
   const handleLogout = () => dispatch({ type: "LOGOUT" });
   const toggleTheme = () => dispatch({ type: "TOGGLE_THEME" });
   const toggleReader = () => dispatch({ type: "TOGGLE_READER" });
+
   useEffect(() => {
     function handleClickOutside(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -31,10 +33,10 @@ export default function TopBar() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        
+        // Fetching categories info
         const res = await API.get("/categories/");
         const data = Array.isArray(res.data) ? res.data : [];
-
+  
         const normalized = data.map((c) => ({
           id:
             (c._id && (typeof c._id === "string" ? c._id : c._id.$oid)) ||
@@ -53,6 +55,7 @@ export default function TopBar() {
 
     fetchCategories();
   }, []);
+
   return (
     <div className="topbar">
       <div className="topbarWrapper">
