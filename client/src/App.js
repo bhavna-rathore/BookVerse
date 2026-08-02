@@ -14,7 +14,7 @@ import BooksPage from "./pages/books/BooksPage";
 import ReviewsPage from "./pages/reviews/ReviewsPage";
 
 function App() {
-  const { user, theme, readerMode } = useContext(Context);
+  const { user } = useContext(Context);
   // Router enables client-side routing - so navigation doesn’t refresh the page.
   // Routes + Route define which component should render for each URL.
   return (
@@ -31,7 +31,6 @@ function App() {
         <Route path="/category/:name" element={<CategoryPage />} />
         <Route path="/books" element={<BooksPage />} />
         <Route path="/reviews" element={<ReviewsPage />} />
-        <Route path="/register" element={user ? <Home /> : <Register />} />
       </Routes>
     </Router>
   );

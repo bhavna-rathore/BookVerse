@@ -1,9 +1,7 @@
 import "./settings.css";
-import Sidebar from "../../components/sidebar/Sidebar";
 import { useContext, useState, useEffect } from "react";
 import { Context } from "../../context/Context";
-import axios from "axios";
-import API from "../../api";
+import API, { IMAGE_BASE_URL } from "../../api";
 
 export default function Settings() {
   const { user, dispatch } = useContext(Context);
@@ -13,8 +11,6 @@ export default function Settings() {
   const [file, setFile] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const PF = "http://localhost:5000/images/";
 
   useEffect(() => {
     if (user) {
@@ -34,7 +30,6 @@ export default function Settings() {
     dispatch({ type: "UPDATE_START" });
 
     const updatedUser = {
-      userId: user._id,
       username,
       email,
       ...(password && { password }),
@@ -43,12 +38,9 @@ export default function Settings() {
     try {
       if (file) {
         const data = new FormData();
-        const filename = Date.now() + file.name;
-        data.append("name", filename);
         data.append("file", file);
-        updatedUser.profilePic = filename;
-
-         await API.post(`/upload`, data);
+        const uploadRes = await API.post(`/upload`, data);
+        updatedUser.profilePic = uploadRes.data.filename;
       }
 
       const res = await API.put("/users/" + user._id, updatedUser);
@@ -77,7 +69,7 @@ export default function Settings() {
                 file
                   ? URL.createObjectURL(file)
                   : user?.profilePic
-                    ? PF + user.profilePic
+                    ? IMAGE_BASE_URL + user.profilePic
                     : "https://cdn-icons-png.flaticon.com/512/847/847969.png"
               }
               alt="Profile"

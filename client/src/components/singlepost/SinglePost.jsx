@@ -2,9 +2,8 @@ import { useLocation } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../../context/Context";
 import "./singlePost.css";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import API from "../../api";
+import API, { IMAGE_BASE_URL } from "../../api";
 
 
 export default function SinglePost() {
@@ -21,7 +20,6 @@ export default function SinglePost() {
   const [keyTakeaways, setKeyTakeaways] = useState([]);
 
   const { user } = useContext(Context);
-  const PF = "http://localhost:5000/images/";
 
   // Fetch single post
   useEffect(() => {
@@ -46,9 +44,7 @@ export default function SinglePost() {
   // Delete post
   const handleDelete = async () => {
     try {
-
-      await API.delete(`/posts/${post._id}?username=${user.username}`);
-
+      await API.delete(`/posts/${post._id}`);
       window.location.replace("/");
     } catch (err) {
       console.error(err.response?.data || err.message);
@@ -58,19 +54,14 @@ export default function SinglePost() {
   // Update post
   const handleUpdate = async () => {
     try {
-    await API.put(
-        `/posts/${post._id}`,
-        {
-          username: user.username,
-          bookTitle,
-          summary,
-          rating,
-          whoShouldRead,
-          myTakeaway,
-          keyTakeaways,
-        },
-
-      );
+      await API.put(`/posts/${post._id}`, {
+        bookTitle,
+        summary,
+        rating,
+        whoShouldRead,
+        myTakeaway,
+        keyTakeaways,
+      });
       setUpdateMode(false);
     } catch (err) {
       console.error(err.response?.data || err.message);
@@ -80,7 +71,7 @@ export default function SinglePost() {
   const imgSrc = post?.bookCover
     ? /^https?:\/\//i.test(post.bookCover)
       ? post.bookCover
-      : PF + post.bookCover
+      : IMAGE_BASE_URL + post.bookCover
     : "https://cdn-icons-png.flaticon.com/512/29/29302.png";
 
   return (

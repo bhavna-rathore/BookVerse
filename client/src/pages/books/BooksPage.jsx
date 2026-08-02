@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Post from '../../components/post/Post';
 import './books.css';
 import API from '../../api';
@@ -7,13 +6,13 @@ import API from '../../api';
 export default function BooksPage() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all');
   const [sort, setSort] = useState('newest');
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         setLoading(true);
+       // Fetches all reviews
         const res = await API.get(`/posts`);
         const data = Array.isArray(res.data) ? res.data : [];
 

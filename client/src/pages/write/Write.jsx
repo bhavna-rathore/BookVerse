@@ -1,7 +1,5 @@
-import { useContext, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import "./write.css";
-import { Context } from "../../context/Context";
 import API from "../../api";
 
 export default function WriteBookPost() {
@@ -14,7 +12,6 @@ export default function WriteBookPost() {
   const [rating, setRating] = useState("");
   const [bookCover, setBookCover] = useState("");
   const [file, setFile] = useState(null);
-  const { user } = useContext(Context);
 
 
   const handleAddLearning = () => setKeyLearnings([...keyLearnings, ""]);
@@ -29,7 +26,6 @@ export default function WriteBookPost() {
     e.preventDefault();
 
     const newPost = {
-      username: user?.username || "guest",
       bookTitle: bookTitle,
       author,
       category,
@@ -43,14 +39,13 @@ export default function WriteBookPost() {
     // upload file if any
     if (file) {
       const data = new FormData();
-      const filename = Date.now() + file.name;
-      data.append("name", filename);
       data.append("file", file);
-      newPost.bookCover = filename;
       try {
-         await API.post(`/upload`, data);
+        const uploadRes = await API.post(`/upload`, data);
+        newPost.bookCover = uploadRes.data.filename;
       } catch (err) {
         console.error("Image upload failed:", err);
+        alert("Cover image upload failed. You can still publish without it.");
       }
     }
 

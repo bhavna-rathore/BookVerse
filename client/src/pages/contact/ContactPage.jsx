@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaEnvelope, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import "./ContactPage.css"; // Optional CSS file
 
 const ContactPage = () => {

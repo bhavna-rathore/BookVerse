@@ -2,13 +2,13 @@ import "./post.css"
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../../context/Context";
+import { IMAGE_BASE_URL } from "../../api";
 
 export default function Post({ post }) {
   const { theme, readerMode } = useContext(Context);
-  const PF = "http://localhost:5000/images/";
   const defaultCover = "https://cdn-icons-png.flaticon.com/512/29/29302.png";
   const imgSrc = post?.bookCover
-    ? (/^https?:\/\//i.test(String(post.bookCover)) ? post.bookCover : PF + post.bookCover)
+    ? (/^https?:\/\//i.test(String(post.bookCover)) ? post.bookCover : IMAGE_BASE_URL + post.bookCover)
     : defaultCover;
 
   const rootClass = [

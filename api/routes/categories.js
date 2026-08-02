@@ -2,45 +2,44 @@ const router = require("express").Router();
 const Category = require("../models/Category");
 const verifyToken = require("../middleware/verifyToken");
 
-// GET all categories
-router.get("/", async (req, res) => {
+// GET all categories (public)
+router.get("/", async (req, res, next) => {
   try {
     const cats = await Category.find({}).sort({ name: 1 });
-
     res.status(200).json(cats);
   } catch (err) {
-    console.error("Get categories error:", err);
-    res.status(500).json({ error: "Failed to fetch categories" });
+    next(err);
   }
 });
 
-// CREATE category (protected)
-router.post("/", async (req, res) => {
+// CREATE category (protected — any logged-in user; tighten to admin-only once roles exist)
+router.post("/", verifyToken, async (req, res, next) => {
   try {
     const { name, description } = req.body;
-    if (!name) return res.status(400).json({ error: "Name is required" });
+    if (!name || typeof name !== "string" || !name.trim()) {
+      return res.status(400).json({ error: "Name is required" });
+    }
 
-    // upsert-like behavior: avoid duplicates
-    const existing = await Category.findOne({ name: name.trim() });
+    // upsert-like behavior: avoid duplicates (case-insensitive)
+    const existing = await Category.findOne({ name: new RegExp(`^${name.trim()}$`, "i") });
     if (existing) return res.status(409).json({ error: "Category already exists" });
 
     const newCat = new Category({ name: name.trim(), description });
     const saved = await newCat.save();
     res.status(201).json(saved);
   } catch (err) {
-    console.error("Create category error:", err);
-    res.status(500).json({ error: "Failed to create category" });
+    next(err);
   }
 });
 
-// DELETE category (protected)
-router.delete("/:id", async (req, res) => {
+// DELETE category (protected — any logged-in user; tighten to admin-only once roles exist)
+router.delete("/:id", verifyToken, async (req, res, next) => {
   try {
-    await Category.findByIdAndDelete(req.params.id);
+    const deleted = await Category.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: "Category not found" });
     res.status(200).json({ message: "Category deleted" });
   } catch (err) {
-    console.error("Delete category error:", err);
-    res.status(500).json({ error: "Failed to delete category" });
+    next(err);
   }
 });
 

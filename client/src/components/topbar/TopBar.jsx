@@ -2,16 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../../context/Context";
 import "./topbar.css";
-import axios from "axios";
-import { useLocation } from "react-router";
-import API from "../../api";
+import API, { IMAGE_BASE_URL } from "../../api";
 
 export default function TopBar() {
   const { user, dispatch, theme, readerMode } = useContext(Context);
   const [categories, setCategories] = useState([]);
-  const location = useLocation();
-  const PF = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/$/, "") + "/images";
-  const path = location.pathname.split("/")[2];
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
 
@@ -112,7 +107,7 @@ export default function TopBar() {
                 className="topImg"
                 src={
                   user.profilePic
-                    ? `${PF}/${user.profilePic}`
+                    ? `${IMAGE_BASE_URL}${user.profilePic}`
                     : "/defaultAvatar.png"
                 }
                 alt={user.username}

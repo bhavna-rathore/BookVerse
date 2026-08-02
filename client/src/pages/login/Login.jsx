@@ -1,5 +1,4 @@
 import { Context } from "../../context/Context";
-import axios from "axios";
 import { useContext, useRef, useState } from "react";
 import { Link } from "react-router-dom"
 import "./login.css"
@@ -32,30 +31,6 @@ export default function Login() {
     }
   };
 
-  const handleGuestLogin = async () => {
-    // Set input values
-    setError(null);
-    if (userRef.current && passwordRef.current) {
-      userRef.current.value = "Bhavna";
-      passwordRef.current.value = "Bhavna";
-    }
-
-    dispatch({ type: "LOGIN_START" });
-    try {
-      const res =await API.post("/auth/login", {
-        username: "Bhavna",
-        password: "Bhavna",
-      });
-      // Save JWT to localStorage
-      if (res.data.token) {
-        localStorage.setItem("jwtToken", res.data.token);
-      }
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-    } catch (err) {
-      setError("Guest login failed");
-      dispatch({ type: "LOGIN_FAILURE" });
-    }
-  };
   return (
     <div className="login">
       <div className="loginCard">
@@ -91,14 +66,6 @@ export default function Login() {
 
           <button className="loginButton" type="submit" disabled={isFetching}>
             {isFetching ? "Logging in..." : "Login"}
-          </button>
-
-          <button
-            className="loginGuestButton"
-            onClick={handleGuestLogin}
-            disabled={isFetching}
-          >
-            {isFetching ? "Please wait..." : "Login as Guest"}
           </button>
         </form>
 

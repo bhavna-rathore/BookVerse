@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Post from "../../components/post/Post";
-import axios from "axios";
 import "./category.css";
 import { useLocation } from "react-router";
 import API from "../../api";
@@ -27,7 +26,7 @@ export default function CategoryPage() {
       }
     }
     load();
-  }, [name]);
+  }, [name, search]);
 
   const decodedName = decodeURIComponent(name);
 

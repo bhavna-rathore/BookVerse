@@ -1,28 +1,33 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const express = require("express");
 const app = express();
-const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
+const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
-const Post = require("./models/Post"); 
+const Post = require("./models/Post");
 const Category = require("./models/Category");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
+const verifyToken = require("./middleware/verifyToken");
+
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET is required — set it in api/.env before starting the server");
+}
 
 app.use(cors());
-dotenv.config();
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "/images")));
 
 mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URL)
   .then(async () => {
     console.log("Connected to MongoDB");
 
@@ -55,14 +60,35 @@ const storage = multer.diskStorage({
     cb(null, "images");
   },
   filename: (req, file, cb) => {
-    cb(null, req.body.name);
+    // Server-generated name only — never trust a client-supplied filename.
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `${Date.now()}-${crypto.randomBytes(8).toString("hex")}${ext}`);
   },
 });
 
+const ALLOWED_IMAGE_TYPES = /^image\/(png|jpe?g|webp|gif)$/;
 
-const upload = multer({ storage: storage });
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  res.status(200).json("File has been uploaded");
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    cb(null, ALLOWED_IMAGE_TYPES.test(file.mimetype));
+  },
+});
+
+const uploadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many uploads from this IP, please try again later." },
+});
+
+app.post("/api/upload", uploadLimiter, verifyToken, upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No valid image file uploaded (png, jpg, webp, gif only, max 5MB)" });
+  }
+  res.status(200).json({ filename: req.file.filename });
 });
 
 app.post("/api/seed", async (req, res) => {
@@ -96,11 +122,37 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to BookVerse API 👋" });
 });
 
-const verifyToken = require("./middleware/verifyToken");
-app.use("/api/auth", authRoute);
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many attempts from this IP, please try again later." },
+});
+
+app.use("/api/auth", authLimiter, authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
+
+// 404 for unmatched API routes
+app.use("/api", (req, res) => {
+  res.status(404).json({ error: "Not found" });
+});
+
+// Centralized error handler — never leak raw driver/stack details to clients.
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  if (err.name === "ValidationError") {
+    return res.status(400).json({ error: err.message });
+  }
+  if (err.code === 11000) {
+    return res.status(409).json({ error: "That value is already in use." });
+  }
+
+  res.status(err.status || 500).json({ error: "Something went wrong. Please try again." });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Backend running on port ${PORT}`));

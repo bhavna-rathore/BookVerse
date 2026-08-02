@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { Context } from '../../context/Context';
 import Post from '../../components/post/Post';
 import './reviews.css';
