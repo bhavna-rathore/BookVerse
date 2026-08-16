@@ -1,48 +1,60 @@
 # Deploying BookVerse
 
 The app reads all configuration from environment variables — no code changes
-should be needed to deploy it to a typical PaaS. This guide is written for
-Render, but the same three pieces (database, API, static client) map onto
-Fly.io, Railway, or Vercel+Render just as directly.
+should be needed to deploy it. This is the actual setup in use: **Render for
+the API, Vercel for the client, MongoDB Atlas for the database.**
 
 ## 1. Database — MongoDB Atlas (free tier)
 
 1. Create a free cluster at https://www.mongodb.com/cloud/atlas.
 2. Create a database user and allow network access from anywhere (0.0.0.0/0)
-   or your host provider's IP range.
+   — Render's outbound IPs aren't fixed on the free tier, so this is the
+   practical setting, not just the easy one.
 3. Copy the connection string — this is your `MONGO_URL`.
 
-## 2. API — deploy `api/` as a web service
-
-Works as-is on Render/Railway/Fly with no Dockerfile required (they can build
-directly from `api/package.json`), or with the included `api/Dockerfile` if
-your host prefers a container.
+## 2. API — Render web service
 
 - **Root directory:** `api`
 - **Build command:** `npm install`
 - **Start command:** `node index.js`
-- **Environment variables:**
+- **Environment variables** (Render dashboard → your api service →
+  **Environment** tab — not a `.env` file, Render doesn't read one):
   | Key | Value |
   |---|---|
   | `MONGO_URL` | your Atlas connection string |
   | `JWT_SECRET` | generate with `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"` |
-  | `PORT` | usually set automatically by the host — leave unset if so |
+  | `PORT` | Render sets this automatically — leave unset |
 
-Once deployed, note the public URL (e.g. `https://bookverse-api.onrender.com`).
+  Saving an env var normally triggers an automatic redeploy. If the app still
+  crashes with `JWT_SECRET is required` after saving, double-check it's on
+  the **api** service specifically (not a client/static service, not an
+  unattached environment group), then trigger **Manual Deploy → Deploy
+  latest commit** to be sure the running instance actually picked it up.
 
-## 3. Client — deploy `client/` as a static site
+  Once deployed, note the public URL (e.g. `https://bookverse-api.onrender.com`).
+
+## 3. Client — Vercel
 
 - **Root directory:** `client`
-- **Build command:** `npm install && npm run build`
-- **Publish directory:** `build`
-- **Environment variables:**
+- Framework preset: Vercel auto-detects Create React App (build command
+  `npm run build`, output directory `build`) — no manual config needed there.
+- **Environment variable** (Vercel dashboard → project → **Settings →
+  Environment Variables**):
   | Key | Value |
   |---|---|
-  | `REACT_APP_API_URL` | `https://<your-api-host>/api` — the API URL from step 2, with `/api` appended |
+  | `REACT_APP_API_URL` | `https://<your-render-api-host>/api` — the URL from step 2, with `/api` appended |
 
-`REACT_APP_API_URL` is read at **build time** (Create React App bakes it into
-the static bundle), so it must be set before the build command runs, not
-after.
+  `REACT_APP_API_URL` is read at **build time** (Create React App bakes it
+  into the static bundle) — set it *before* triggering a build, and redeploy
+  after changing it; it won't retroactively apply to an existing build.
+- **`client/vercel.json`** — required for React Router. Vercel serves a
+  static build with no server behind it, so without a rewrite rule, any
+  route other than `/` (e.g. `/post/:id`, `/admin`, a refresh on any page)
+  404s instead of falling back to `index.html`. This file is already in the
+  repo:
+  ```json
+  { "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }
+  ```
 
 ## 4. Point the two at each other
 
