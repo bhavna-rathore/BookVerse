@@ -1,0 +1,459 @@
+openapi: 3.0.3
+info:
+  title: BookVerse API
+  version: "1.0.0"
+  description: >
+    A book-review platform API — auth, book reviews (posts), categories,
+    threaded comments, file uploads, and a contact inbox. Documents the
+    routes as they actually behave, generated from the route handlers in
+    api/routes/.
+servers:
+  - url: http://localhost:5000/api
+    description: Local development
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Posts
+  - name: Categories
+  - name: Comments
+  - name: Contact
+  - name: Upload
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >
+        Obtained from POST /auth/login. Send as `Authorization: Bearer <token>`.
+        The decoded payload carries { id, username, role }.
+
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema: { type: string }
+
+  responses:
+    BadRequest:
+      description: Validation failed
+      content:
+        application/json: { schema: { $ref: "#/components/schemas/Error" } }
+    Unauthorized:
+      description: Missing or invalid token
+      content:
+        application/json: { schema: { $ref: "#/components/schemas/Error" } }
+    Forbidden:
+      description: Authenticated, but not allowed to perform this action
+      content:
+        application/json: { schema: { $ref: "#/components/schemas/Error" } }
+    NotFound:
+      description: Resource does not exist
+      content:
+        application/json: { schema: { $ref: "#/components/schemas/Error" } }
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+
+    User:
+      type: object
+      properties:
+        _id: { type: string }
+        username: { type: string }
+        email: { type: string }
+        profilePic: { type: string }
+        role: { type: string, enum: [user, admin] }
+        createdAt: { type: string, format: date-time }
+
+    PublicUser:
+      type: object
+      description: What GET /users/:id returns — no email, no password.
+      properties:
+        _id: { type: string }
+        username: { type: string }
+        profilePic: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    Post:
+      type: object
+      properties:
+        _id: { type: string }
+        username: { type: string, description: Set from the verified token, never client-supplied. }
+        bookTitle: { type: string }
+        author: { type: string }
+        categoryId: { type: string, nullable: true }
+        category: { type: string, description: Denormalized copy of the linked Category's name. }
+        rating: { type: number, minimum: 0, maximum: 5 }
+        summary: { type: string }
+        keyTakeaways: { type: array, items: { type: string } }
+        keyLearnings: { type: array, items: { type: string } }
+        whoShouldRead: { type: string }
+        bookCover: { type: string }
+        myTakeaway: { type: string }
+        tags: { type: array, items: { type: string } }
+        likes: { type: integer }
+        views: { type: integer }
+        isFeatured: { type: boolean }
+        createdAt: { type: string, format: date-time }
+
+    Category:
+      type: object
+      properties:
+        _id: { type: string }
+        name: { type: string }
+        description: { type: string }
+
+    Comment:
+      type: object
+      properties:
+        _id: { type: string }
+        postId: { type: string }
+        parentId: { type: string, nullable: true }
+        username: { type: string }
+        text: { type: string }
+        createdAt: { type: string, format: date-time }
+        replies:
+          type: array
+          description: Only present on GET /comments, which returns a nested tree.
+          items: { $ref: "#/components/schemas/Comment" }
+
+    ContactMessage:
+      type: object
+      properties:
+        _id: { type: string }
+        name: { type: string }
+        email: { type: string }
+        message: { type: string }
+        createdAt: { type: string, format: date-time }
+
+paths:
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Create an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, email, password]
+              properties:
+                username: { type: string, minLength: 3 }
+                email: { type: string }
+                password: { type: string, minLength: 6 }
+      responses:
+        "200":
+          description: Account created (password never included in the response)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Log in and receive a JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username: { type: string }
+                password: { type: string }
+      responses:
+        "200":
+          description: Login succeeded
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/User"
+                  - type: object
+                    properties:
+                      token: { type: string }
+        "400": { $ref: "#/components/responses/BadRequest" }
+
+  /users/{id}:
+    put:
+      tags: [Users]
+      summary: Update your own account (owner-only)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/IdParam" }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username: { type: string }
+                email: { type: string }
+                profilePic: { type: string }
+                password: { type: string }
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/User" } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+    delete:
+      tags: [Users]
+      summary: Delete your own account (owner-only) — cascades to your posts
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/IdParam" }]
+      responses:
+        "200": { description: Deleted }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    get:
+      tags: [Users]
+      summary: Get a public profile (no email, no password)
+      parameters: [{ $ref: "#/components/parameters/IdParam" }]
+      responses:
+        "200":
+          description: Public profile
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/PublicUser" } }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /posts:
+    get:
+      tags: [Posts]
+      summary: List posts (public, paginated)
+      parameters:
+        - name: category
+          in: query
+          schema: { type: string }
+          description: Category name, case-insensitive. `cat` is accepted as an alias.
+        - name: categoryId
+          in: query
+          schema: { type: string }
+        - name: user
+          in: query
+          schema: { type: string }
+          description: Filter to one author's posts by username.
+        - name: search
+          in: query
+          schema: { type: string }
+          description: Matches bookTitle, summary, or author.
+        - name: sort
+          in: query
+          schema: { type: string, enum: [newest, oldest, rating], default: newest }
+          description: Applied by the database before pagination.
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+      responses:
+        "200":
+          description: A page of posts
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Post" } }
+    post:
+      tags: [Posts]
+      summary: Create a post
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bookTitle, bookCover]
+              properties:
+                bookTitle: { type: string }
+                author: { type: string }
+                categoryId: { type: string, nullable: true }
+                rating: { type: number }
+                summary: { type: string }
+                keyLearnings: { type: array, items: { type: string } }
+                whoShouldRead: { type: string }
+                bookCover: { type: string }
+      responses:
+        "200":
+          description: Created post
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Post" } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /posts/{id}:
+    get:
+      tags: [Posts]
+      summary: Get a single post (public)
+      parameters: [{ $ref: "#/components/parameters/IdParam" }]
+      responses:
+        "200": { description: Post, content: { application/json: { schema: { $ref: "#/components/schemas/Post" } } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+    put:
+      tags: [Posts]
+      summary: Update a post (owner-only)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/IdParam" }]
+      responses:
+        "200": { description: Updated post, content: { application/json: { schema: { $ref: "#/components/schemas/Post" } } } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [Posts]
+      summary: Delete a post (owner or admin)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/IdParam" }]
+      responses:
+        "200": { description: Deleted }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /categories:
+    get:
+      tags: [Categories]
+      summary: List all categories (public)
+      responses:
+        "200":
+          description: Categories, sorted by name
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Category" } }
+    post:
+      tags: [Categories]
+      summary: Create a category (any logged-in user — additive, not admin-gated)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string }
+                description: { type: string }
+      responses:
+        "201": { description: Created, content: { application/json: { schema: { $ref: "#/components/schemas/Category" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "409": { description: Category already exists }
+
+  /categories/{id}:
+    delete:
+      tags: [Categories]
+      summary: Delete a category (admin-only — can orphan referencing posts)
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/IdParam" }]
+      responses:
+        "200": { description: Deleted }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /comments:
+    get:
+      tags: [Comments]
+      summary: List comments for a post as a nested reply tree (public)
+      parameters:
+        - name: postId
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Root comments, each with a nested `replies` array
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Comment" } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+    post:
+      tags: [Comments]
+      summary: Create a comment or reply
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [postId, text]
+              properties:
+                postId: { type: string }
+                text: { type: string }
+                parentId: { type: string, nullable: true, description: Must belong to the same post. }
+      responses:
+        "201": { description: Created, content: { application/json: { schema: { $ref: "#/components/schemas/Comment" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /comments/{id}:
+    delete:
+      tags: [Comments]
+      summary: Delete a comment (owner or admin) — cascades to all replies
+      security: [{ bearerAuth: [] }]
+      parameters: [{ $ref: "#/components/parameters/IdParam" }]
+      responses:
+        "200": { description: "Deleted — response includes deletedCount (the comment plus every descendant)" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /contact:
+    post:
+      tags: [Contact]
+      summary: Submit a contact message (public)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, message]
+              properties:
+                name: { type: string }
+                email: { type: string }
+                message: { type: string }
+      responses:
+        "201": { description: Saved, content: { application/json: { schema: { $ref: "#/components/schemas/ContactMessage" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+    get:
+      tags: [Contact]
+      summary: List submissions, newest first (admin-only)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Submissions
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/ContactMessage" } }
+        "403": { $ref: "#/components/responses/Forbidden" }
+
+  /upload:
+    post:
+      tags: [Upload]
+      summary: Upload an image (used for book covers / profile pictures)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: >
+            Server-generated filename — never the client's original filename.
+            Max 5MB; png/jpg/webp/gif only, content-sniffed after upload.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  filename: { type: string }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }

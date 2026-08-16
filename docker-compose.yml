@@ -1,0 +1,37 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URL: mongodb://mongo:27017/bookverse
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-me}
+      PORT: 5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - api-images:/app/images
+
+  client:
+    build:
+      context: ./client
+      args:
+        REACT_APP_API_URL: http://localhost:5000/api
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "3000:80"
+
+volumes:
+  mongo-data:
+  api-images:

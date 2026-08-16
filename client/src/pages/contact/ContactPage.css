@@ -69,6 +69,13 @@
   text-align: center;
 }
 
+.form-error {
+  color: #b23a2e;
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
 .contact-email {
   margin-top: 20px;
   font-size: 14px;

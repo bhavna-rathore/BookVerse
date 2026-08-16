@@ -1,0 +1,135 @@
+.adminPage {
+  max-width: var(--max-width-content, 1300px);
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+  color: var(--text-primary);
+}
+
+.adminTitle {
+  margin: 0 0 4px;
+  font-size: 28px;
+}
+
+.adminSubtitle {
+  margin: 0 0 24px;
+  color: var(--text-secondary, var(--text-primary));
+  opacity: 0.8;
+}
+
+.adminGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 800px) {
+  .adminGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adminPanel {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.adminPanelTitle {
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+
+.adminInlineForm {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.adminInput {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.adminBtn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent-color, #4a6fa5);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.adminBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.adminBtnDanger {
+  background: #c0392b;
+}
+
+.adminError {
+  color: #c0392b;
+  font-size: 13px;
+  margin: -8px 0 12px;
+}
+
+.adminMuted {
+  color: var(--text-secondary, var(--text-primary));
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.adminList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.adminListRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.adminListInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.adminListName {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.adminListMeta {
+  font-size: 12px;
+  color: var(--text-secondary, var(--text-primary));
+  opacity: 0.7;
+}
+
+.adminDenied {
+  max-width: 500px;
+  margin: 80px auto;
+  text-align: center;
+  color: var(--text-primary);
+}

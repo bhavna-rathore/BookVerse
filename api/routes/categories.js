@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Category = require("../models/Category");
 const verifyToken = require("../middleware/verifyToken");
+const requireRole = require("../middleware/requireRole");
 
 // GET all categories (public)
 router.get("/", async (req, res, next) => {
@@ -12,7 +13,10 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// CREATE category (protected — any logged-in user; tighten to admin-only once roles exist)
+// CREATE category (protected — any logged-in user)
+// Deliberately not admin-gated: creating a tag is low-risk and additive
+// (mirrors Write.jsx's inline "+ Add new category"), unlike deletion below,
+// which can orphan existing posts and is a real moderation action.
 router.post("/", verifyToken, async (req, res, next) => {
   try {
     const { name, description } = req.body;
@@ -32,8 +36,8 @@ router.post("/", verifyToken, async (req, res, next) => {
   }
 });
 
-// DELETE category (protected — any logged-in user; tighten to admin-only once roles exist)
-router.delete("/:id", verifyToken, async (req, res, next) => {
+// DELETE category (admin-only — destructive, can orphan posts referencing it)
+router.delete("/:id", verifyToken, requireRole("admin"), async (req, res, next) => {
   try {
     const deleted = await Category.findByIdAndDelete(req.params.id);
     if (!deleted) return res.status(404).json({ error: "Category not found" });

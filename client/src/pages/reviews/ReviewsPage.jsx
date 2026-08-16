@@ -1,52 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Context } from '../../context/Context';
 import Post from '../../components/post/Post';
+import Pagination from '../../components/pagination/Pagination';
+import usePosts from '../../hooks/usePosts';
 import './reviews.css';
-import API from '../../api';
 
 export default function ReviewsPage() {
   const { user } = useContext(Context);
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [sort, setSort] = useState('newest');
   const [filter, setFilter] = useState('all');
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        setLoading(true);
-        const res = await API.get(`/posts`);
-        let data = Array.isArray(res.data) ? res.data : [];
-
-        // Apply filters
-        if (filter === 'mine' && user) {
-          data = data.filter(review => review.username === user.username);
-        }
-
-        // Apply sorting
-        data.sort((a, b) => {
-          switch (sort) {
-            case 'oldest':
-              return new Date(a.createdAt) - new Date(b.createdAt);
-            case 'rating':
-              return (b.rating || 0) - (a.rating || 0);
-            case 'newest':
-            default:
-              return new Date(b.createdAt) - new Date(a.createdAt);
-          }
-        });
-
-        setReviews(data);
-      } catch (err) {
-        console.error('Failed to fetch reviews:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchReviews();
-  }, [sort, filter, user]);
+  const {
+    posts: reviews,
+    loading,
+    sort,
+    setSort,
+    page,
+    setPage,
+    hasMore,
+  } = usePosts({ username: filter === 'mine' ? user?.username : undefined });
 
   return (
     <div className="reviews-page">
@@ -111,11 +83,14 @@ export default function ReviewsPage() {
             )}
           </div>
         ) : (
-          <div className="reviews-list">
-            {reviews.map(review => (
-              <Post key={review._id} post={review} />
-            ))}
-          </div>
+          <>
+            <div className="reviews-list">
+              {reviews.map(review => (
+                <Post key={review._id} post={review} />
+              ))}
+            </div>
+            <Pagination page={page} hasMore={hasMore} onChange={setPage} />
+          </>
         )}
       </main>
     </div>

@@ -12,6 +12,7 @@ import ContactPage from "./pages/contact/ContactPage";
 import CategoryPage from "./pages/category/CategoryPage";
 import BooksPage from "./pages/books/BooksPage";
 import ReviewsPage from "./pages/reviews/ReviewsPage";
+import AdminPage from "./pages/admin/AdminPage";
 
 function App() {
   const { user } = useContext(Context);
@@ -31,6 +32,7 @@ function App() {
         <Route path="/category/:name" element={<CategoryPage />} />
         <Route path="/books" element={<BooksPage />} />
         <Route path="/reviews" element={<ReviewsPage />} />
+        <Route path="/admin" element={user?.role === "admin" ? <AdminPage /> : <Home />} />
       </Routes>
     </Router>
   );

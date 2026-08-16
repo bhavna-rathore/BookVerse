@@ -81,6 +81,7 @@ export default function TopBar() {
           <Link to="/books" className="navLink">Books</Link>
           <Link to="/reviews" className="navLink">Reviews</Link>
           {user && <Link to="/write" className="navLink">Write Review</Link>}
+          {user?.role === "admin" && <Link to="/admin" className="navLink">Admin</Link>}
         </nav>
 
         <div className="topRight">

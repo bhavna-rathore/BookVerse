@@ -17,6 +17,11 @@ build/
 .tmp/
 coverage/
 
+# User-uploaded images — runtime artifacts, not source. Keep the directory
+# itself (see images/.gitkeep) so multer's diskStorage destination exists.
+images/*
+!images/.gitkeep
+
 # OS and editor files
 .DS_Store
 Thumbs.db

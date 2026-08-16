@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./write.css";
 import API from "../../api";
+
+const NEW_CATEGORY_VALUE = "__new__";
 
 export default function WriteBookPost() {
   const [bookTitle, setBookTitle] = useState("");
@@ -8,11 +10,26 @@ export default function WriteBookPost() {
   const [summary, setSummary] = useState("");
   const [keyLearnings, setKeyLearnings] = useState([""]);
   const [whoShouldRead, setWhoShouldRead] = useState("");
-  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [categoryId, setCategoryId] = useState("");
+  const [newCategoryName, setNewCategoryName] = useState("");
   const [rating, setRating] = useState("");
   const [bookCover, setBookCover] = useState("");
   const [file, setFile] = useState(null);
 
+  // Categories are a real linked collection, not free text — this is what
+  // keeps "Fiction" and "fiction" from ever becoming two different things.
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const res = await API.get("/categories");
+        setCategories(Array.isArray(res.data) ? res.data : []);
+      } catch (err) {
+        console.error("Failed to load categories:", err);
+      }
+    };
+    loadCategories();
+  }, []);
 
   const handleAddLearning = () => setKeyLearnings([...keyLearnings, ""]);
 
@@ -22,13 +39,31 @@ export default function WriteBookPost() {
     setKeyLearnings(arr);
   };
 
+  const resolveCategoryId = async () => {
+    if (categoryId !== NEW_CATEGORY_VALUE) return categoryId || undefined;
+    if (!newCategoryName.trim()) return undefined;
+
+    try {
+      const res = await API.post("/categories", { name: newCategoryName.trim() });
+      return res.data._id;
+    } catch (err) {
+      // Someone else may have just created the same category — fall back to
+      // finding it instead of failing the whole post.
+      const existing = await API.get("/categories");
+      const match = (existing.data || []).find(
+        (c) => c.name.toLowerCase() === newCategoryName.trim().toLowerCase()
+      );
+      return match?._id;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newPost = {
       bookTitle: bookTitle,
       author,
-      category,
+      categoryId: await resolveCategoryId(),
       rating: Number(rating),
       summary,
       keyLearnings: keyLearnings.filter((k) => k.trim() !== ""),
@@ -108,13 +143,27 @@ export default function WriteBookPost() {
           required
         />
 
-        <input
-          type="text"
+        <select
           className="write-input"
-          placeholder="Category (e.g., Self Growth, Productivity)"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option value="">No category</option>
+          {categories.map((c) => (
+            <option key={c._id} value={c._id}>{c.name}</option>
+          ))}
+          <option value={NEW_CATEGORY_VALUE}>+ Add new category…</option>
+        </select>
+
+        {categoryId === NEW_CATEGORY_VALUE && (
+          <input
+            type="text"
+            className="write-input"
+            placeholder="New category name"
+            value={newCategoryName}
+            onChange={(e) => setNewCategoryName(e.target.value)}
+          />
+        )}
 
         <input
           type="number"

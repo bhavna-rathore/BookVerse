@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import API from "../../api";
 import "./ContactPage.css"; // Optional CSS file
 
 const ContactPage = () => {
-  
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -11,6 +12,8 @@ const ContactPage = () => {
   });
 
   const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -19,12 +22,20 @@ const ContactPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate API submission
-    console.log("Sending form data:", formData);
-    setStatus("Message sent! I'll get back to you soon.");
-    setFormData({ name: "", email: "", message: "" });
+    setError("");
+    setStatus("");
+    setSubmitting(true);
+    try {
+      await API.post("/contact", formData);
+      setStatus("Message sent! I'll get back to you soon.");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (err) {
+      setError(err.response?.data?.error || "Failed to send your message. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -60,13 +71,12 @@ const ContactPage = () => {
           required
         ></textarea>
 
-        <button type="submit">Send Message</button>
+        <button type="submit" disabled={submitting}>
+          {submitting ? "Sending..." : "Send Message"}
+        </button>
         {status && <p className="form-status">{status}</p>}
+        {error && <p className="form-error">{error}</p>}
       </form>
-{/* 
-      <div className="contact-email">
-        <FaEnvelope /> Email me directly: <a href="mailto:yourblog@email.com">yourblog@email.com</a>
-      </div> */}
 
       <div className="social-links">
         <p>Follow me:</p>

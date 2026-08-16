@@ -52,7 +52,7 @@ router.post("/login", async (req, res, next) => {
     if (!validated) return res.status(400).json({ error: "Wrong username or password" });
 
     const token = jwt.sign(
-      { id: user._id, username: user.username },
+      { id: user._id, username: user.username, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );

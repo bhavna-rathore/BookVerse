@@ -16,7 +16,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "migrate:categories": "node scripts/migrateCategories.js",
+    "make-admin": "node scripts/makeAdmin.js"
   },
   "author": "",
   "license": "ISC",

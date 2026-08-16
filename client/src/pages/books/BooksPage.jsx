@@ -1,38 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Post from '../../components/post/Post';
+import Pagination from '../../components/pagination/Pagination';
+import usePosts from '../../hooks/usePosts';
 import './books.css';
-import API from '../../api';
 
 export default function BooksPage() {
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [sort, setSort] = useState('newest');
-
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        setLoading(true);
-       // Fetches all reviews
-        const res = await API.get(`/posts`);
-        const data = Array.isArray(res.data) ? res.data : [];
-
-        // Sort books based on selection
-        const sorted = [...data].sort((a, b) => {
-          if (sort === 'newest') return new Date(b.createdAt) - new Date(a.createdAt);
-          if (sort === 'rating') return (b.rating || 0) - (a.rating || 0);
-          return 0;
-        });
-
-        setBooks(sorted);
-      } catch (err) {
-        console.error('Failed to fetch books:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBooks();
-  }, [sort]);
+  const { posts: books, loading, sort, setSort, page, setPage, hasMore } = usePosts();
 
   return (
     <div className="books-page">
@@ -65,13 +38,16 @@ export default function BooksPage() {
             <p>Be the first to add a book review!</p>
           </div>
         ) : (
-          <div className="books-grid">
-            {books.map(book => (
-              <div key={book._id} className="book-card">
-                <Post post={book} />
-              </div>
-            ))}
-          </div>
+          <>
+            <div className="books-grid">
+              {books.map(book => (
+                <div key={book._id} className="book-card">
+                  <Post post={book} />
+                </div>
+              ))}
+            </div>
+            <Pagination page={page} hasMore={hasMore} onChange={setPage} />
+          </>
         )}
       </main>
     </div>

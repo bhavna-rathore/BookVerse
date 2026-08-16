@@ -174,3 +174,61 @@ describe("GET /api/posts", () => {
     expect(Array.isArray(res.body)).toBe(true);
   });
 });
+
+describe("GET /api/posts?sort= — applied by the database, before pagination", () => {
+  it("sorts by rating across the full result set, not just within one page", async () => {
+    // Regression test: sort used to be applied client-side, after the server
+    // had already paginated — so "highest rated" only reordered whatever 12
+    // posts happened to land on the current page. Sort must now come from
+    // the database, before skip/limit, so it's correct across pages.
+    const token = await registerAndLogin("alice");
+    await createPost(token, { bookTitle: "Low", rating: 1 });
+    await createPost(token, { bookTitle: "High", rating: 5 });
+    await createPost(token, { bookTitle: "Mid", rating: 3 });
+
+    // limit=2 forces the top-rated posts to span what would be two pages —
+    // page 1 must still contain the two *actually* highest-rated posts.
+    const res = await request(app).get("/api/posts?sort=rating&limit=2&page=1");
+
+    expect(res.status).toBe(200);
+    expect(res.body.map((p) => p.bookTitle)).toEqual(["High", "Mid"]);
+  });
+
+  it("defaults to newest-first when no sort is given", async () => {
+    const token = await registerAndLogin("alice");
+    const first = await createPost(token, { bookTitle: "First" });
+    const second = await createPost(token, { bookTitle: "Second" });
+
+    const res = await request(app).get("/api/posts");
+
+    expect(res.body.map((p) => p._id)).toEqual([second._id, first._id]);
+  });
+});
+
+describe("GET /api/posts?search= — backed by a text index, not $regex", () => {
+  it("finds a post by a word in its title, summary, or author", async () => {
+    const token = await registerAndLogin("alice");
+    await createPost(token, {
+      bookTitle: "Atomic Habits",
+      author: "James Clear",
+      summary: "Small habits, big results.",
+    });
+    await createPost(token, { bookTitle: "Dune", author: "Frank Herbert", summary: "Desert planet politics." });
+
+    const byTitle = await request(app).get("/api/posts?search=Atomic");
+    expect(byTitle.body).toHaveLength(1);
+    expect(byTitle.body[0].bookTitle).toBe("Atomic Habits");
+
+    const byAuthor = await request(app).get("/api/posts?search=Herbert");
+    expect(byAuthor.body).toHaveLength(1);
+    expect(byAuthor.body[0].bookTitle).toBe("Dune");
+  });
+
+  it("returns no results for a term that doesn't appear anywhere", async () => {
+    const token = await registerAndLogin("alice");
+    await createPost(token, { bookTitle: "Atomic Habits" });
+
+    const res = await request(app).get("/api/posts?search=nonexistentterm");
+    expect(res.body).toHaveLength(0);
+  });
+});

@@ -4,6 +4,7 @@ import { Context } from "../../context/Context";
 import "./singlePost.css";
 import { Link } from "react-router-dom";
 import API, { IMAGE_BASE_URL } from "../../api";
+import CommentSection from "../comments/CommentSection";
 
 
 export default function SinglePost() {
@@ -93,17 +94,19 @@ export default function SinglePost() {
           ) : (
             <h1 className="singlePostTitle">
               {bookTitle}
-              {post.username === user?.username && (
+              {(post.username === user?.username || user?.role === "admin") && (
                 <div className="singlePostEdit">
-                  <i
-                    className="singlePostIcon fa-solid fa-pen-to-square"
-                    onClick={() => setUpdateMode(true)}
-                    title="Edit"
-                  ></i>
+                  {post.username === user?.username && (
+                    <i
+                      className="singlePostIcon fa-solid fa-pen-to-square"
+                      onClick={() => setUpdateMode(true)}
+                      title="Edit"
+                    ></i>
+                  )}
                   <i
                     className="singlePostIcon fa-solid fa-trash"
                     onClick={handleDelete}
-                    title="Delete"
+                    title={user?.role === "admin" && post.username !== user?.username ? "Delete (admin)" : "Delete"}
                   ></i>
                 </div>
               )}
@@ -235,6 +238,8 @@ export default function SinglePost() {
               </button>
             </div>
           )}
+
+          {post._id && <CommentSection postId={post._id} />}
         </div>
       </div>
     </div>

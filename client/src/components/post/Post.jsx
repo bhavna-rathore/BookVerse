@@ -30,11 +30,11 @@ export default function Post({ post }) {
       <Link to={`/post/${post?._id}`} className="link">
         <div className="postBody">
           <div className="postInfo">
-            <div className="postCats">
-              {post?.categories && post.categories.map((c, idx) => (
-                <span key={idx} className="postCat">{c.name ?? c}</span>
-              ))}
-            </div>
+            {post?.category && (
+              <div className="postCats">
+                <span className="postCat">{post.category}</span>
+              </div>
+            )}
             <span className="postTitle">{post?.bookTitle || post?.title}</span>
             <hr />
             <span className="postDate">{post?.createdAt ? new Date(post.createdAt).toDateString() : ""}</span>

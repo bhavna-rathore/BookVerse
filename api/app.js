@@ -7,6 +7,8 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
+const commentRoute = require("./routes/comments");
+const contactRoute = require("./routes/contact");
 const multer = require("multer");
 const crypto = require("crypto");
 const path = require("path");
@@ -57,10 +59,31 @@ const uploadLimiter = rateLimit({
   message: { error: "Too many uploads from this IP, please try again later." },
 });
 
+// multer's fileFilter only checks the client-supplied Content-Type header,
+// which is trivially spoofable (rename evil.html to cover.png, claim
+// image/png). This checks the file's actual magic bytes on disk, after
+// multer has written it, so a mislabeled non-image is caught for real.
+const MAGIC_BYTE_CHECKS = {
+  "image/png": (buf) => buf.length >= 4 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47,
+  "image/jpeg": (buf) => buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff,
+  "image/jpg": (buf) => buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff,
+  "image/gif": (buf) => buf.length >= 4 && buf.toString("ascii", 0, 4) === "GIF8",
+  "image/webp": (buf) =>
+    buf.length >= 12 && buf.toString("ascii", 0, 4) === "RIFF" && buf.toString("ascii", 8, 12) === "WEBP",
+};
+
 app.post("/api/upload", uploadLimiter, verifyToken, upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No valid image file uploaded (png, jpg, webp, gif only, max 5MB)" });
   }
+
+  const check = MAGIC_BYTE_CHECKS[req.file.mimetype];
+  const header = fs.readFileSync(req.file.path, { flag: "r" }).subarray(0, 12);
+  if (!check || !check(header)) {
+    fs.unlinkSync(req.file.path);
+    return res.status(400).json({ error: "File content doesn't match a valid image (png, jpg, webp, gif only)" });
+  }
+
   res.status(200).json({ filename: req.file.filename });
 });
 
@@ -103,10 +126,22 @@ const authLimiter = rateLimit({
   message: { error: "Too many attempts from this IP, please try again later." },
 });
 
+// Same shape as authLimiter — this endpoint is public and unauthenticated,
+// so it needs its own spam guard rather than sharing one meant for login attempts.
+const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: isTestEnv ? 1000 : 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many messages sent. Please try again later." },
+});
+
 app.use("/api/auth", authLimiter, authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
+app.use("/api/comments", commentRoute);
+app.use("/api/contact", contactLimiter, contactRoute);
 
 // 404 for unmatched API routes
 app.use("/api", (req, res) => {
